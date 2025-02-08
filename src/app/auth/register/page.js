@@ -15,8 +15,18 @@ const Register = () => {
   const [address, setAddress] = useState("");
   const [contact, setContact] = useState("");
 
-  const handleRegister = () =>{
+  const handleRegister = async () =>{
     console.log(email,password,c_password,name,address,contact);
+
+    let result = await fetch("http://localhost:3000/api/auth",{
+        method:"POST",
+        //we do not send password
+        body:JSON.stringify({email,password,name,city , contact,address})
+    })
+
+    result = await result.json()
+    console.log(result);
+
   }
 
   return (
