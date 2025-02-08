@@ -7,7 +7,7 @@ const Layout = ({ children }) => {
       <Card className="w-full max-w-md shadow-xl bg-white">
         <CardHeader>
           <CardTitle className="text-center text-2xl font-bold text-gray-800">
-            🍔 Foodie Auth
+            🍔 Zomato for Food
           </CardTitle>
         </CardHeader>
         <CardContent>{children}</CardContent>
