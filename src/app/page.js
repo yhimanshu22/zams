@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { buttonVariants } from '@/components/ui/button';
+import Footer from '@/components/Footer';
 
 export default function Home() {
   return (
@@ -37,7 +38,7 @@ export default function Home() {
 
 
       {/* Feature Section */}
-      <div className='mx-auto mt-32 max-w-5xl sm:mt-56'>
+      <div className='mx-auto h-screen mt-32 max-w-5xl sm:mt-56'>
         <div className='mb-12 px-6 lg:px-8'>
           <div className='mx-auto max-w-2xl sm:text-center'>
             <h2 className='mt-2 font-bold text-4xl text-gray-900 sm:text-5xl'>
@@ -80,6 +81,7 @@ export default function Home() {
           </li>
         </ol>
       </div>
+      <Footer />
     </>
   );
 }
