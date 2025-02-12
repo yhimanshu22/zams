@@ -25,14 +25,17 @@ const Dashboard = () => {
             <aside className="w-64 bg-white dark:bg-gray-800 shadow-md p-5 hidden md:block">
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Dashboard</h2>
                 <nav className="mt-6 space-y-4">
-                    <a href="#" className="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700">
+                    <a href="/restaurant/dashboard/profile" className="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700">
                         <User className="w-5 h-5" /> <span>Profile</span>
                     </a>
-                    <a href="#" className="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700">
+                    <a href="/restaurant/dashboard/orders" className="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700">
                         <ShoppingCart className="w-5 h-5" /> <span>Orders</span>
                     </a>
-                    <a href="#" className="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700">
+                    <a href="/restaurant/dashboard/analytics" className="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700">
                         <BarChart className="w-5 h-5" /> <span>Analytics</span>
+                    </a>
+                    <a href="/restaurant/dashboard/product" className="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700">
+                        <ShoppingCart className="w-5 h-5" /> <span>Products</span>
                     </a>
                 </nav>
             </aside>
