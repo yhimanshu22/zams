@@ -2,6 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 
 export default function ProductPage() {
     const [products, setProducts] = useState([]);
@@ -74,11 +78,9 @@ export default function ProductPage() {
             const res = await fetch(`/api/restaurant/product/${id}`, { method: "DELETE" });
             const data = await res.json();
 
-            console.log(data);
-
-            if (data.message == "Product deleted successfully") {
+            if (data.message === "Product deleted successfully") {
                 alert("Product deleted!");
-                fetchProducts(); // Refresh product list after delete
+                setProducts((prevProducts) => prevProducts.filter((product) => product._id !== id)); // Remove product instantly
             } else {
                 alert(data.error);
             }
@@ -95,89 +97,64 @@ export default function ProductPage() {
     };
 
     return (
-        <div className="container mx-auto p-4">
-            <h1 className="text-2xl font-bold mb-4">Product Management</h1>
-
-            {/* Product Form */}
-            <form onSubmit={handleSubmit} className="space-y-3 border p-4 rounded">
-                <input
-                    type="text"
-                    name="name"
-                    value={form.name}
-                    onChange={handleChange}
-                    placeholder="Product Name"
-                    className="w-full p-2 border rounded"
-                    required
-                />
-                <input
-                    type="number"
-                    name="price"
-                    value={form.price}
-                    onChange={handleChange}
-                    placeholder="Price"
-                    className="w-full p-2 border rounded"
-                    required
-                />
-                <input
-                    type="text"
-                    name="path"
-                    value={form.path}
-                    onChange={handleChange}
-                    placeholder="Image Path"
-                    className="w-full p-2 border rounded"
-                    required
-                />
-                <input
-                    type="text"
-                    name="desc"
-                    value={form.desc}
-                    onChange={handleChange}
-                    placeholder="Description"
-                    className="w-full p-2 border rounded"
-                    required
-                />
-                <button
-                    type="submit"
-                    className="bg-blue-500 text-white p-2 rounded w-full"
-                    disabled={loading}
-                >
-                    {loading ? "Processing..." : editId ? "Update Product" : "Add Product"}
-                </button>
-            </form>
+        <div className="container mx-auto p-6">
+            <Card className="mb-6">
+                <CardHeader>
+                    <CardTitle className="text-xl font-semibold">Product Management</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    {/* Product Form */}
+                    <form onSubmit={handleSubmit} className="grid gap-4">
+                        <Input type="text" name="name" value={form.name} onChange={handleChange} placeholder="Product Name" required />
+                        <Input type="number" name="price" value={form.price} onChange={handleChange} placeholder="Price" required />
+                        <Input type="text" name="path" value={form.path} onChange={handleChange} placeholder="Image Path" required />
+                        <Input type="text" name="desc" value={form.desc} onChange={handleChange} placeholder="Description" required />
+                        <Button type="submit" disabled={loading} className="w-full">
+                            {loading ? "Processing..." : editId ? "Update Product" : "Add Product"}
+                        </Button>
+                    </form>
+                </CardContent>
+            </Card>
 
             {/* Product List */}
-            <div className="mt-6">
-                <h2 className="text-xl font-semibold">Products</h2>
-                {loading ? (
-                    <p>Loading...</p>
-                ) : (
-                    <ul className="space-y-2">
-                        {products.length === 0 ? (
-                            <p>No products found</p>
-                        ) : (
-                            products.map((product) => (
-                                <li key={product._id} className="p-2 border rounded flex justify-between items-center">
-                                    <span>{product.name} - ${product.price}</span>
-                                    <div>
-                                        <button
-                                            className="bg-green-500 text-white p-1 rounded mr-2"
-                                            onClick={() => handleEdit(product)}
-                                        >
-                                            Edit
-                                        </button>
-                                        <button
-                                            className="bg-red-500 text-white p-1 rounded"
-                                            onClick={() => handleDelete(product._id)}
-                                        >
-                                            Delete
-                                        </button>
-                                    </div>
-                                </li>
-                            ))
-                        )}
-                    </ul>
-                )}
-            </div>
+            <Card>
+                <CardHeader>
+                    <CardTitle className="text-lg font-semibold">Product List</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    {loading ? (
+                        <p>Loading...</p>
+                    ) : products.length === 0 ? (
+                        <p>No products found</p>
+                    ) : (
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Name</TableHead>
+                                    <TableHead>Price</TableHead>
+                                    <TableHead>Actions</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {products.map((product) => (
+                                    <TableRow key={product._id}>
+                                        <TableCell>{product.name}</TableCell>
+                                        <TableCell>${product.price}</TableCell>
+                                        <TableCell>
+                                            <Button variant="outline" size="sm" onClick={() => handleEdit(product)} className="mr-2">
+                                                Edit
+                                            </Button>
+                                            <Button variant="destructive" size="sm" onClick={() => handleDelete(product._id)}>
+                                                Delete
+                                            </Button>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    )}
+                </CardContent>
+            </Card>
         </div>
     );
 }
