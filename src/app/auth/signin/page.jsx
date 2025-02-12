@@ -24,7 +24,7 @@ const SignIn = () => {
         });
 
         if (result?.error) {
-            console.error("Login failed:", result.error);
+            alert("Login failed: " + result.error); // Show error to user
         } else {
             router.push("/restaurant/dashboard"); // Redirect after login
         }
@@ -39,45 +39,47 @@ const SignIn = () => {
     };
 
     return (
-        <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg">
-            <h2 className="text-2xl font-semibold text-center mb-4">Sign In</h2>
+        <div className="h-screen flex items-center justify-center bg-gray-100">
+            <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
+                <h2 className="text-2xl font-semibold text-center mb-4">Sign In</h2>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-                <input
-                    type="email"
-                    name="email"
-                    value={credentials.email}
-                    onChange={handleChange}
-                    placeholder="Email"
-                    className="w-full p-2 border rounded"
-                    required
-                />
-                <input
-                    type="password"
-                    name="password"
-                    value={credentials.password}
-                    onChange={handleChange}
-                    placeholder="Password"
-                    className="w-full p-2 border rounded"
-                    required
-                />
-                <button
-                    type="submit"
-                    className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition"
-                    disabled={loading}
-                >
-                    {loading ? "Signing in..." : "Sign In"}
-                </button>
-            </form>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <input
+                        type="email"
+                        name="email"
+                        value={credentials.email}
+                        onChange={handleChange}
+                        placeholder="Email"
+                        className="w-full p-2 border rounded"
+                        required
+                    />
+                    <input
+                        type="password"
+                        name="password"
+                        value={credentials.password}
+                        onChange={handleChange}
+                        placeholder="Password"
+                        className="w-full p-2 border rounded"
+                        required
+                    />
+                    <button
+                        type="submit"
+                        className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition"
+                        disabled={loading}
+                    >
+                        {loading ? "Signing in..." : "Sign In"}
+                    </button>
+                </form>
 
-            <div className="mt-4 text-center">
-                <button
-                    onClick={handleGoogleSignIn}
-                    className="w-full bg-red-500 text-white p-2 rounded hover:bg-red-600 transition"
-                    disabled={loading}
-                >
-                    {loading ? "Signing in..." : "Sign in with Google"}
-                </button>
+                <div className="mt-4 text-center">
+                    <button
+                        onClick={handleGoogleSignIn}
+                        className="w-full bg-red-500 text-white p-2 rounded hover:bg-red-600 transition"
+                        disabled={loading}
+                    >
+                        {loading ? "Signing in..." : "Sign in with Google"}
+                    </button>
+                </div>
             </div>
         </div>
     );

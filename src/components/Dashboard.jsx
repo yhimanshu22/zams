@@ -1,18 +1,23 @@
-"use client"
+"use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { Menu, Moon, Sun, User, ShoppingCart, BarChart } from "lucide-react";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 const Dashboard = () => {
     const [darkMode, setDarkMode] = useState(false);
+    const { data: session, status } = useSession();
+    const router = useRouter();
 
-    const session = getServerSession(authOptions)
+    // Redirect if not logged in
+    useEffect(() => {
+        if (status === "unauthenticated") {
+            router.push("/auth/signin");
+        }
+    }, [status, router]);
 
-    if (!session) {
-        redirect('/auth/login')
-    }
+    if (status === "loading") return <p>Loading...</p>;
 
     return (
         <div className={`${darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-900"} min-h-screen flex`}>
@@ -39,7 +44,7 @@ const Dashboard = () => {
                     <button className="md:hidden p-2 rounded-md bg-white dark:bg-gray-700">
                         <Menu className="w-6 h-6" />
                     </button>
-                    <h1 className="text-2xl font-bold">Welcome Back, User!</h1>
+                    <h1 className="text-2xl font-bold">Welcome Back, {session?.user?.email || "User"}!</h1>
                     <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-md bg-white dark:bg-gray-700">
                         {darkMode ? <Sun className="w-6 h-6" /> : <Moon className="w-6 h-6" />}
                     </button>

@@ -78,6 +78,33 @@ const Signup = () => {
                         className="w-full p-2 border rounded"
                         required
                     />
+                    <input
+                        type="text"
+                        name="contact"
+                        value={user.contact}
+                        onChange={handleChange}
+                        placeholder="Contact"
+                        className="w-full p-2 border rounded"
+                        required
+                    />
+                    <input
+                        type="text"
+                        name="address"
+                        value={user.address}
+                        onChange={handleChange}
+                        placeholder="Address"
+                        className="w-full p-2 border rounded"
+                        required
+                    />
+                    <input
+                        type="text"
+                        name="city"
+                        value={user.city}
+                        onChange={handleChange}
+                        placeholder="City"
+                        className="w-full p-2 border rounded"
+                        required
+                    />
                     <button
                         type="submit"
                         className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition"

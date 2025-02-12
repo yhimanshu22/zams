@@ -1,8 +1,8 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-import { connectDB } from "@/lib/db"; // Your database connection function
-import User from "@/models/User"; // Your User model
+import { connectDB } from "@/lib/db";
+import User from "@/models/User";
 
 export const authOptions = {
     providers: [
@@ -20,36 +20,55 @@ export const authOptions = {
                 password: { label: "Password", type: "password" },
             },
             async authorize(credentials) {
-                await connectDB(); // Connect to database
+                if (!credentials?.email || !credentials?.password) {
+                    throw new Error("Email and password are required");
+                }
+
+                await connectDB(); // Ensure DB connection
 
                 const user = await User.findOne({ email: credentials.email });
                 if (!user) {
-                    throw new Error("User not found");
+                    throw new Error("No user found with this email");
                 }
 
-                // Verify password (Assuming bcrypt)
+                // Validate password using the model's method
                 const isValidPassword = await user.comparePassword(credentials.password);
                 if (!isValidPassword) {
-                    throw new Error("Invalid password");
+                    throw new Error("Incorrect password");
                 }
 
-                return user; // Return user if authentication succeeds
+                return { id: user._id, name: user.name, email: user.email };
             },
         }),
     ],
+
     callbacks: {
+        async jwt({ token, user }) {
+            if (user) {
+                token.id = user.id;
+                token.email = user.email;
+                token.name = user.name;
+            }
+            return token;
+        },
         async session({ session, token }) {
-            session.user.id = token.sub;
+            if (token?.id) {
+                session.user.id = token.id;
+            }
             return session;
         },
     },
+
     pages: {
         signIn: "/auth/signin", // Custom sign-in page
     },
+
     secret: process.env.NEXTAUTH_SECRET,
     session: {
         strategy: "jwt",
+        maxAge: 24 * 60 * 60
     },
+
     debug: process.env.NODE_ENV === "development",
 };
 
